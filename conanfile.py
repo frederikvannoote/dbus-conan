@@ -26,6 +26,12 @@ class DBusConan(ConanFile):
     def layout(self):
         cmake_layout(self)
         
+    def _configure_cmake(self):
+        cmake = CMake(self)
+        cmake.definitions["DBUS_ENABLE_XML_DOCS"] = "OFF"
+        cmake.configure()
+        return cmake
+    
     def source(self):
         git = tools.Git(folder=".")
         git.clone("https://gitlab.freedesktop.org/dbus/dbus.git", "dbus-1.13.18")
@@ -35,13 +41,11 @@ class DBusConan(ConanFile):
         tc.generate()
 
     def build(self):
-        cmake = CMake(self)
-        cmake.definitions["DBUS_ENABLE_XML_DOCS"] = "OFF"
-        cmake.configure()
+        cmake = self._configure_cmake()
         cmake.build()
 
     def package(self):
-        cmake = CMake(self)
+        cmake = self._configure_cmake()
         cmake.install()
 
     def package_info(self):
