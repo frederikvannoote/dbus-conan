@@ -36,7 +36,7 @@ class DBusConan(ConanFile):
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["DBUS_ENABLE_XML_DOCS"] = False
+        cmake.definitions["DBUS_ENABLE_XML_DOCS"] = "OFF"
         cmake.configure()
         cmake.build()
 
