@@ -21,9 +21,6 @@ class DBusConan(ConanFile):
         if self.settings.os == "Windows":
             del self.options.fPIC
 
-    def layout(self):
-        cmake_layout(self)
-
     def source(self):
         git = tools.Git(folder=".")
         git.clone("https://gitlab.freedesktop.org/dbus/dbus.git", "dbus-1.13.18")
