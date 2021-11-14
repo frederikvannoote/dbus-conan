@@ -11,7 +11,7 @@ class DBusConan(ConanFile):
     default_options = { "win_service": False }
     
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "CMakeLists.txt", "bus-service-win.patch"
+    exports_sources = [ "bus-service-win.patch", "src/*" ]
 
     generators = "cmake_find_package"
     
@@ -25,7 +25,7 @@ class DBusConan(ConanFile):
             del self.options.fPIC
 
     def source(self):
-        git = tools.Git(folder=".")
+        git = tools.Git(folder="src")
         git.clone("https://gitlab.freedesktop.org/dbus/dbus.git", "dbus-1.13.18")
 
     def build(self):
@@ -33,7 +33,7 @@ class DBusConan(ConanFile):
             tools.patch(patch_file="bus-service-win.patch")
         cmake = CMake(self)
         cmake.definitions["DBUS_ENABLE_XML_DOCS"] = "OFF"
-        cmake.configure(source_folder=".")
+        cmake.configure(source_folder="src")
         cmake.build()
         cmake.install()
 
