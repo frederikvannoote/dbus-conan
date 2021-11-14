@@ -11,7 +11,7 @@ class DBusConan(ConanFile):
     default_options = { "win_service": False }
     
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "CMakeLists.txt"
+    exports_sources = [ "CMakeLists.txt", "bus-service-win.patch" ]
 
     generators = "cmake_find_package"
     
