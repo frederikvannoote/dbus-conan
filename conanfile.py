@@ -7,6 +7,9 @@ class DBusConan(ConanFile):
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
 
+    options = { "win_service": [True, False] }
+    default_options = { "win_service": False }
+    
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt"
 
@@ -26,6 +29,8 @@ class DBusConan(ConanFile):
         git.clone("https://gitlab.freedesktop.org/dbus/dbus.git", "dbus-1.13.18")
 
     def build(self):
+        if self.options.win_service == True:
+            tools.patch(patch_file="bus-service-win.patch")
         cmake = CMake(self)
         cmake.definitions["DBUS_ENABLE_XML_DOCS"] = "OFF"
         cmake.configure(source_folder=".")
